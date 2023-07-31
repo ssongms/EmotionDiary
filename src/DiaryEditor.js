@@ -1,7 +1,9 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const DiaryEditor = () => {
+  const authorInput = useRef(); // useRef를 호출해서 반환값을 authorInput에 저장
+  const contentInput = useRef();
   const [state, setState] = useState({
     author: "",
     content: "",
@@ -16,15 +18,26 @@ const DiaryEditor = () => {
   };
 
   const handleSubmit = () => {
-    console.log(state);
+    if (state.author.length < 1) {
+      authorInput.current.focus();
+      //focus
+      return;
+    }
+    if (state.content.length < 5) {
+      contentInput.current.focus();
+      //focus
+      return;
+    }
     alert("일기를 저장했습니다!");
+    console.log(state);
   };
 
   return (
     <div className="DiaryEditor">
-      <h2>오늘의 일기</h2>
+      <h2>Today's Diary</h2>
       <div>
         <input
+          ref={authorInput}
           name="author"
           value={state.author}
           onChange={handleChangeState}
@@ -33,6 +46,7 @@ const DiaryEditor = () => {
 
       <div>
         <textarea
+          ref={contentInput}
           name="content"
           value={state.content}
           onChange={handleChangeState}
