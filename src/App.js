@@ -2,6 +2,7 @@ import "./App.css";
 import DiaryEditor from "./DiaryEditor";
 import DiaryList from "./DiaryList";
 import { useState, useRef } from "react";
+import Lifecycle from "./Lifecycle";
 
 function App() {
   const [data, setData] = useState([]);
@@ -21,10 +22,25 @@ function App() {
     // 이렇게 해야 새로 추가한 일기가 맨 위에 렌더링됨
   };
 
+  const onRemove = (targetId) => {
+    const newDiaryList = data.filter((it) => it.id !== targetId);
+    setData(newDiaryList);
+    console.log(`${targetId}가 삭제되었습니다.`);
+  };
+
+  const onEdit = (targetId, newContent) => {
+    setData(data.map((it) => (it.id === targetId ? { ...it, content: newContent } : it)));
+  };
+
   return (
     <div className="App">
+      <Lifecycle />
       <DiaryEditor onCreate={onCreate} />
-      <DiaryList diaryList={data} />
+      <DiaryList
+        onEdit={onEdit}
+        onRemove={onRemove}
+        diaryList={data}
+      />
     </div>
   );
 }
