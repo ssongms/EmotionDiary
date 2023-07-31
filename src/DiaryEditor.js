@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState, useRef } from "react";
 
-const DiaryEditor = () => {
+const DiaryEditor = ({ onCreate }) => {
   const authorInput = useRef(); // useRef를 호출해서 반환값을 authorInput에 저장
   const contentInput = useRef();
   const [state, setState] = useState({
@@ -28,8 +28,14 @@ const DiaryEditor = () => {
       //focus
       return;
     }
+    onCreate(state.author, state.content, state.emotion);
     alert("일기를 저장했습니다!");
     console.log(state);
+    setState({
+      author: "",
+      content: "",
+      emotion: 1,
+    });
   };
 
   return (

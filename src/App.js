@@ -1,50 +1,30 @@
 import "./App.css";
 import DiaryEditor from "./DiaryEditor";
 import DiaryList from "./DiaryList";
-
-const dummyList = [
-  {
-    id: 1,
-    author: "송민석",
-    content: "더미 리스트1",
-    emotion: 1,
-    created_date: new Date().getTime(),
-  },
-  {
-    id: 2,
-    author: "장대희",
-    content: "더미 리스트2",
-    emotion: 5,
-    created_date: new Date().getTime(),
-  },
-  {
-    id: 3,
-    author: "엄홍식",
-    content: "더미 리스트3",
-    emotion: 4,
-    created_date: new Date().getTime(),
-  },
-  {
-    id: 4,
-    author: "윤영석",
-    content: "더미 리스트4",
-    emotion: 1,
-    created_date: new Date().getTime(),
-  },
-  {
-    id: 5,
-    author: "이윤기",
-    content: "더미 리스트5",
-    emotion: 3,
-    created_date: new Date().getTime(),
-  },
-];
+import { useState, useRef } from "react";
 
 function App() {
+  const [data, setData] = useState([]);
+  const dataId = useRef(0);
+  //일기 배열(data)에 새로운 일기를 추가할 수 있는 함수
+  const onCreate = (author, content, emotion) => {
+    const created_date = new Date().getTime();
+    const newItem = {
+      author,
+      content,
+      emotion,
+      created_date,
+      id: dataId.current,
+    };
+    dataId.current += 1;
+    setData([newItem, ...data]); // 새로운 일기(newItem) 추가하고 이후에 기존 일기를 붙임.
+    // 이렇게 해야 새로 추가한 일기가 맨 위에 렌더링됨
+  };
+
   return (
     <div className="App">
-      <DiaryEditor />
-      <DiaryList diaryList={dummyList} />
+      <DiaryEditor onCreate={onCreate} />
+      <DiaryList diaryList={data} />
     </div>
   );
 }
